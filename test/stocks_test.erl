@@ -1,25 +1,28 @@
 -module(stocks_test).
--import(stocks, [put_indexes/2, rank/2, get_stocks/0]).
+-import(stocks, [put_indexes/2, rank/2, get_stocks/0, stock_ranking/1]).
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 
+stock_ranking_test() -> 
+    Stocks = get_stocks(),
+    Res = stock_ranking(Stocks),
+    erlang:display(Res),
+
+    ?assert(is_list(Res)).
+
 roic_ranking_test() ->
     Stocks = get_stocks(),
-    Rank = rank(roic, Stocks),
-    Mapped = lists:map(fun(X) -> {maps:get(ticker, X), maps:get(roicRanking, X)} end, Rank),
-    erlang:display(Mapped),
+    Ranking = rank(roic, Stocks),
 
-    ?assert(is_list(Mapped)),
-    ?assert(true).
+    ?assert(is_list(Ranking)),
+    ?assert(lists:all(fun(X) -> maps:is_key(roicRank, X) end, Ranking)).
 
 ev_ebit_test() -> 
     Stocks = get_stocks(),
-    Rank = rank(eV_Ebit, Stocks),
-    Mapped = lists:map(fun(X) -> {maps:get(ticker, X), maps:get(eV_EbitRanking, X)} end, Rank),
-    erlang:display(Mapped),
+    Ranking = rank(eV_Ebit, Stocks),
 
-    ?assert(is_list(Mapped)),
-    ?assert(true).
+    ?assert(is_list(Ranking)),
+    ?assert(lists:all(fun(X) -> maps:is_key(eV_EbitRank, X) end, Ranking)).
 
 put_indexes_test() ->
     MapList = [
