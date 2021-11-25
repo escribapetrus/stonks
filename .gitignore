@@ -1,0 +1,25 @@
+# defaults
+.rebar3
+_*
+.eunit
+*.o
+*.beam
+*.plt
+*.swp
+*.swo
+.erlang.cookie
+ebin
+log
+erl_crash.dump
+.rebar
+logs
+_build
+.idea
+*.iml
+rebar3.crashdump
+*~
+
+# custom
+source_url.txt
+stock_data.txt
+.test_results.erl
