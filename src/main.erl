@@ -10,7 +10,7 @@ run() ->
 
 report() -> 
     Stocks = run(),
-    {ok, File} = file:open("fruit_count.csv", [write]),
+    {ok, File} = file:open("stock_report.csv", [write]),
     F = fun(X) -> 
         {stockdata,Ticker, Name, Price, Liquidity, Position} = X,
         io:format(File, "~s,~s,~p,~p,~p~n", [Ticker, Name, Price, Liquidity, Position])
