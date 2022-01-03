@@ -1,11 +1,11 @@
 -module(stocks).
--export([get_stocks/1, stock_ranking/1]).
+-export( [put_indexes/2, rank/2, get_stocks/1, stock_ranking/1, parse/1]).
 -import(requests, [do_request/1]).
 -import(file_data, [get_contents/1]).
 -import(lists, [map/2, sort/2]).
 -import(maps, [put/3, get/2, is_key/2]).
 
-% -record(stockdata, {ticker, company_name, price, ev_ebit, roic, liabilities_assets}).
+-record(stockdata, {ticker, name, price, liquidity, rank}).
 
 -spec stock_ranking(list()) -> list().
 stock_ranking(Stocks) ->
@@ -29,8 +29,10 @@ get_stocks(Source) ->
         is_key(roic, X),
         is_key(margemEbit, X),
         is_key(passivo_Ativo, X),
+        is_key(liquidezMediaDiaria, X),
         get(margemEbit, X) > 0,
-        get(passivo_Ativo, X) < 2
+        get(passivo_Ativo, X) < 2,
+        get(liquidezMediaDiaria, X) > 100000
     ].
 
 -spec rank(atom(), list(map())) -> list(map()).
@@ -52,3 +54,11 @@ put_indexes([], _, _, Res) -> Res;
 put_indexes([H|T], IndexName, Index, Res) -> 
     Updated = put(IndexName, Index, H), 
     put_indexes(T, IndexName, Index + 1, [Updated | Res]).
+    
+parse(Map) ->
+    Ticker = binary_to_list(maps:get(ticker, Map)),
+    CompanyName = binary_to_list(maps:get(companyName, Map)),
+    Price = maps:get(price, Map),
+    Liquidity = maps:get(liquidezMediaDiaria, Map),
+    Rank = maps:get(stockRank, Map),
+    #stockdata{ticker=Ticker, name=CompanyName, price=Price, liquidity=Liquidity, rank=Rank}.

@@ -1,5 +1,5 @@
 -module(stocks_test).
--import(stocks, [put_indexes/2, rank/2, get_stocks/1, stock_ranking/1]).
+-import(stocks, [put_indexes/2, rank/2, get_stocks/1, stock_ranking/1, parse/1]).
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 
@@ -40,3 +40,10 @@ put_indexes_test() ->
 
     ?assertEqual(length(Res), length(Expected)),
     ?assertEqual(Res, Expected).
+
+parse_test() -> 
+    Stocks = get_stocks({file, "stock_data.txt"}),
+    [Map | _Tail] = stock_ranking(Stocks),
+    Parsed = parse(Map),
+    Expected = {stockdata,"AZEV4","AZEVEDO E TRAVASSOS",3.08,2423212.74,494},
+    ?assertEqual(Expected, Parsed).
