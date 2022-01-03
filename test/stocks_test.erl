@@ -1,24 +1,23 @@
 -module(stocks_test).
--import(stocks, [put_indexes/2, rank/2, get_stocks/0, stock_ranking/1]).
+-import(stocks, [put_indexes/2, rank/2, get_stocks/1, stock_ranking/1]).
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 
 stock_ranking_test() -> 
-    Stocks = get_stocks(),
+    Stocks = get_stocks({file, "stock_data.txt"}),
     Res = stock_ranking(Stocks),
-    erlang:display(Res),
 
     ?assert(is_list(Res)).
 
 roic_ranking_test() ->
-    Stocks = get_stocks(),
+    Stocks = get_stocks({file, "stock_data.txt"}),
     Ranking = rank(roic, Stocks),
 
     ?assert(is_list(Ranking)),
     ?assert(lists:all(fun(X) -> maps:is_key(roicRank, X) end, Ranking)).
 
 ev_ebit_test() -> 
-    Stocks = get_stocks(),
+    Stocks = get_stocks({file, "stock_data.txt"}),
     Ranking = rank(eV_Ebit, Stocks),
 
     ?assert(is_list(Ranking)),

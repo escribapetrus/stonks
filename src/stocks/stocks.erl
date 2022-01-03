@@ -1,7 +1,7 @@
 -module(stocks).
--export([put_indexes/2, rank/2, get_stocks/0, stock_ranking/1]).
-% -import(requests, [parse/1, do_request/0]).
--import(file_data, [get_contents/0, parse/1]).
+-export([get_stocks/1, stock_ranking/1]).
+-import(requests, [do_request/1]).
+-import(file_data, [get_contents/1]).
 -import(lists, [map/2, sort/2]).
 -import(maps, [put/3, get/2, is_key/2]).
 
@@ -16,20 +16,22 @@ stock_ranking(Stocks) ->
     Ranked = map(PutStockRank, StocksROICRanked),
     sort(RankCriteria, Ranked).
 
--spec get_stocks() -> list().
-get_stocks() -> 
-    % Response = parse(do_request()),
-    Response = parse(get_contents()),
-    Filtered = [X || 
-        X <- Response, 
+-spec get_stocks({atom(), string()}) -> list().
+get_stocks(Source) -> 
+    Response = case Source of
+        {file, Filename} -> file_data:parse(get_contents(Filename));
+        {web, Url} -> requests:parse(do_request(Url))
+    end,
+
+    [X || 
+        X <- Response,
         is_key(eV_Ebit, X),
         is_key(roic, X),
         is_key(margemEbit, X),
         is_key(passivo_Ativo, X),
         get(margemEbit, X) > 0,
         get(passivo_Ativo, X) < 2
-    ],
-    Filtered.
+    ].
 
 -spec rank(atom(), list(map())) -> list(map()).
 rank(eV_Ebit, Maps) -> 
@@ -42,7 +44,7 @@ rank(roic, Maps) ->
     Sorted = sort(RankCriteria, Maps),
     put_indexes(Sorted, roicRank).
 
--spec put_indexes(list(), string()) -> list().
+-spec put_indexes(list(), atom()) -> list().
 put_indexes(Maps, IndexName) -> put_indexes(Maps, IndexName, 1, []).
 
 -spec put_indexes(list(), atom(), integer(), list()) -> list().

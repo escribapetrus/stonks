@@ -1,11 +1,11 @@
 -module(file_data_test).
--import(file_data, [get_contents/0, parse/1]).
+-import(file_data, [get_contents/1, parse/1]).
 
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 
 get_test() -> 
-    Res = get_contents(),
+    Res = get_contents("stock_data.txt"),
 
     ?assert(is_binary(Res)).
 
