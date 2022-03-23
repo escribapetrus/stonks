@@ -4,8 +4,7 @@
   {registered, []},
   {mod, {stockscreener_app, []}},
   {applications,
-   [kernel,
-    stdlib
+   [kernel,stdlib,crypto, cowboy, lager
    ]},
   {env,[]},
   {modules, []},
