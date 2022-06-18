@@ -3,11 +3,12 @@
 -export([init/2, terminate/3]).
 
 init(Req, State) ->
-    Stocks = jsx:encode(main:run()),
+    Stocks = stocks_server:get_stocks_ranking(),
+    Body = jsx:encode(Stocks),
     Res = cowboy_req:reply(
             200,
             #{<<"content-type">> => <<"application/json">>},
-            Stocks,
+            Body,
             Req
     ),
     {ok, Res, State}.
