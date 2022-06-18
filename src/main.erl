@@ -6,7 +6,8 @@
 run() -> 
     {ok, Url} = application:get_env(stonks, stocks_source_url),
     Stocks = get_stocks({web, Url}),
-    lists:map(fun stocks:parse/1, stock_ranking(Stocks)).
+    stock_ranking(Stocks).
+    %% lists:map(fun stocks:parse/1, stock_ranking(Stocks)).
 
 report() -> 
     Stocks = run(),
