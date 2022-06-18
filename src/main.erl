@@ -4,7 +4,7 @@
 -export([run/0, report/0]).
 
 run() -> 
-    Url = binary_to_list(get_contents("source_url.txt")),
+    {ok, Url} = application:get_env(stonks, stocks_source_url),
     Stocks = get_stocks({web, Url}),
     lists:map(fun stocks:parse/1, stock_ranking(Stocks)).
 

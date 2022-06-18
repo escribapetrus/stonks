@@ -1,5 +1,4 @@
--module(requests_test).
-
+-module(http_test).
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 

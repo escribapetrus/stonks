@@ -1,8 +1,8 @@
--module(requests).
--export([do_request/1, parse/1]).
+-module(http).
+-export([get/1, parse/1]).
 
--spec do_request(string()) -> string().
-do_request(Url) -> 
+-spec get(string()) -> string().
+get(Url) ->
     inets:start(),
     {ok, {{_Version, 200, _ReasonPhrase}, _Headers, Body}} = httpc:request(get, {Url, []}, [], []),
     Body.

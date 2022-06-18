@@ -24,3 +24,6 @@ source_url.txt
 stock_data.txt
 stock_report.csv
 .test_results.erl
+
+#config
+config/sys.config
