@@ -4,10 +4,8 @@
   {registered, []},
   {mod, {stockscreener_app, []}},
   {applications,
-   [kernel,
-    stdlib,
-    hackney
-   ]},
+   [kernel, stdlib, crypto, cowboy, lager, hackney]
+  },
   {env,[]},
   {modules, []},
 
