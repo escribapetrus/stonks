@@ -3,15 +3,14 @@
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("stdlib/include/assert.hrl").
 
-stock_ranking_test() -> 
+stock_ranking_file_test() ->
     Stocks = get_stocks({file, "stock_data.txt"}),
     Res = stock_ranking(Stocks),
 
     ?assert(is_list(Res)).
 
-roic_ranking_test() ->
-    Stocks = get_stocks({file, "stock_data.txt"}),
-    Ranking = rank(roic, Stocks),
+roic_ranking_test() -> Stocks = get_stocks({file, "stock_data.txt"}), Ranking =
+    rank(roic, Stocks),
 
     ?assert(is_list(Ranking)),
     ?assert(lists:all(fun(X) -> maps:is_key(roicRank, X) end, Ranking)).
@@ -45,5 +44,5 @@ parse_test() ->
     Stocks = get_stocks({file, "stock_data.txt"}),
     [Map | _Tail] = stock_ranking(Stocks),
     Parsed = parse(Map),
-    Expected = {stockdata,"AZEV4","AZEVEDO E TRAVASSOS",3.08,2423212.74,494},
+    Expected = {stockdata,"G2DI33","G2D INVESTMENTS LTD",3.35,451390.62,524},
     ?assertEqual(Expected, Parsed).
